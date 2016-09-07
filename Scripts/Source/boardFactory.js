@@ -252,7 +252,15 @@ define([], function () {
 
 
 			return str;
-		 };
+		};
+
+		board.undoLastMove = function () {
+			mMoves.pop();
+			mCurrentPlayer = mCurrentPlayer === board.piece.x ?
+				mCurrentPlayer = board.piece.o :
+				mCurrentPlayer = board.piece.x;
+			return board;
+		};
 		
 		return board;
 	};

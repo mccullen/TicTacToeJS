@@ -105,7 +105,24 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 			expect(board.getState()).toBe(board.state.draw);
 		})
 
-		it("can play a game of n dimensions", function () {
+		it("allows you to undo your move", function () {
+			var board = boardFactory({});
+
+			expect(board.getNumMoves()).toBe(0);
+			expect(board.getCurrentPlayer()).toBe(board.piece.x);
+			board.playPiece({row: 0, column: 0});
+			expect(board.getNumMoves()).toBe(1);
+			expect(board.getCurrentPlayer()).toBe(board.piece.o);
+
+			// test undo last move function
+
+			board.undoLastMove();
+
+			expect(board.getCurrentPlayer()).toBe(board.piece.x);
+			expect(board.getNumMoves()).toBe(0);
+		})
+
+		xit("can play a game of n dimensions", function () {
 			var numRows = parseInt(prompt("Enter number of rows"));
 			var numColumns = parseInt(prompt("Enter number of columns"));
 			var board = boardFactory({
