@@ -18,7 +18,8 @@ require.config({
   
   paths: {
 	  boardFactory: "Scripts/Source/boardFactory",
-	  underscore: "Scripts/Libraries/underscore"
+	  underscore: "Scripts/Libraries/underscore",
+	  computerPlayerFactory: "Scripts/Source/computerPlayerFactory"
   },
 
   // dynamically load all test files

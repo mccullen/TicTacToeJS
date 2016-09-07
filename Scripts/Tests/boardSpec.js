@@ -5,7 +5,7 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 		it ("initializes a board with no moves", function () {
 			var board = boardFactory({});
 			expect(board.getNumMoves()).toBe(0);
-		})
+		});
 		
 		it("creates an empty board by default", function () {
 			var board = boardFactory({});
@@ -16,12 +16,12 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 					expect(value).toBe(board.piece.none);
 				});
 			});
-		})
+		});
 		
 		it("creates board where first player is 'X' by default", function () {
 			var board = boardFactory({});
 			expect(board.getCurrentPlayer()).toBe(board.piece.x);
-		})
+		});
 
 		it("allows players to play a piece at a specified row", function () {
 			var board = boardFactory({});
@@ -40,7 +40,7 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 			expect(board.playPiece({row: 0, column: 0}).toString())
 				.toBe("O X      ");
 
-		})
+		});
 
 		it("can convert a board to a string", function () {
 			var dimension = 3;
@@ -58,7 +58,7 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 				}
 			}
 			expect(boardString).toBe(expectedValue);
-		})
+		});
 
 		it("can determine that an unfinished board is unfinished", 
 			function () {
@@ -71,7 +71,7 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 			// make a move and board should now be unfinished
 			board.playPiece({row: 0, column: 0});
 			expect(board.getState()).toBe(board.state.unfinished);
-		})
+		});
 
 		it("can determine that an xWon board means x has won", function () {
 			var board = boardFactory({});
@@ -83,11 +83,11 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 				.playPiece({row: 0, column: 1})
 				.playPiece({row: 2, column: 2});
 			expect(board.getState()).toBe(board.state.xWon);
-		})
+		});
 
 		it("can determine that an oWon board means o won the game", function () {
 		
-		})
+		});
 
 		it("can determine a draw board", function () {
 			var board = boardFactory({});
@@ -103,7 +103,7 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 				.playPiece({row: 1, column: 2});
 
 			expect(board.getState()).toBe(board.state.draw);
-		})
+		});
 
 		it("allows you to undo your move", function () {
 			var board = boardFactory({});
@@ -120,7 +120,7 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 
 			expect(board.getCurrentPlayer()).toBe(board.piece.x);
 			expect(board.getNumMoves()).toBe(0);
-		})
+		});
 
 		xit("can play a game of n dimensions", function () {
 			var numRows = parseInt(prompt("Enter number of rows"));
@@ -136,8 +136,8 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 				board.playPiece({row: row, column: column});
 				alert(board.getState() + '\n' + board.print());
 			}
-		})
+		});
 
-	})
-})
+	});
+});
 

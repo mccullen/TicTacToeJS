@@ -7,10 +7,10 @@ define([], function () {
 		// Enum of the states. Could also do a getStates function 
 		// that returns a private object
 		board.state = Object.freeze({
-			unfinished: "unfinished",
-			xWon: "xWon",
-			oWon: "oWon",
-			draw: "draw"
+			unfinished: undefined,
+			xWon: 1,
+			oWon: -1,
+			draw: 0
 		});
 
 		board.piece = Object.freeze({
@@ -260,6 +260,12 @@ define([], function () {
 				mCurrentPlayer = board.piece.o :
 				mCurrentPlayer = board.piece.x;
 			return board;
+		};
+		board.getNumRows = function () {
+			return mNumRows;
+		};
+		board.getNumColumns = function () {
+			return mNumColumns;
 		};
 		
 		return board;
