@@ -35,6 +35,7 @@ define([], function () {
 				// it is maximizer's turn (x)
 
 				value = board.state.oWon; // assume the worst
+				mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
 
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
 					for (iColumn = 0; iColumn < board.getNumColumns();
@@ -43,12 +44,14 @@ define([], function () {
 						if (board.isEmpty({row: iRow, column: iColumn})) {
 
 							board.playPiece({row: iRow, column: iColumn});
-							mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
 
 							// Get value of terminal state for playing 
 							// the piece above assuming the other player
 							// and you both play optimally
 							response = mMinimax(board, depth + 1);
+
+
+							board.undoLastMove();
 
 							// Store it in the hash table
 							mBoardToMoveValues[board].push({
@@ -57,8 +60,6 @@ define([], function () {
 								depth: depth,
 								value: response
 							});
-
-							board.undoLastMove();
 
 
 							if (response > value) {
@@ -70,7 +71,8 @@ define([], function () {
 			} else {
 				// it is minimizer's turn (o)
 
-				value = board.piece.x; // assume the worst
+				value = board.state.xWon; // assume the worst
+				mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
 
 				for (jRow = 0; jRow < board.getNumRows(); jRow += 1) {
 					for (jColumn = 0; jColumn < board.getNumColumns();
@@ -78,14 +80,13 @@ define([], function () {
 
 						if (board.isEmpty({row: jRow, column: jColumn})) {
 							
-
-							value = board.state.xWon; // assume the worst
-
 							board.playPiece({row: jRow, column: jColumn});
 
-							mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
 
 							response = mMinimax(board, depth + 1);
+
+
+							board.undoLastMove();
 
 							mBoardToMoveValues[board].push({
 								row: iRow,
@@ -93,8 +94,6 @@ define([], function () {
 								depth: depth,
 								value: response
 							});
-
-							board.undoLastMove();
 
 
 							if (response < value) {
