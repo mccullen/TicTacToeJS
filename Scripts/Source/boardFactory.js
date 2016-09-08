@@ -255,6 +255,8 @@ define([], function () {
 		};
 
 		board.undoLastMove = function () {
+			var lastMove = mMoves[mMoves.length - 1];
+			mPieces[lastMove.row][lastMove.column] = board.piece.none;
 			mMoves.pop();
 			mCurrentPlayer = mCurrentPlayer === board.piece.x ?
 				mCurrentPlayer = board.piece.o :
@@ -266,6 +268,10 @@ define([], function () {
 		};
 		board.getNumColumns = function () {
 			return mNumColumns;
+		};
+
+		board.isEmpty = function (place) {
+			return mPieces[place.row][place.column] === board.piece.none;
 		};
 		
 		return board;

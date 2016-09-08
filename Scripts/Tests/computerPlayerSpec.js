@@ -6,7 +6,10 @@ define(["boardFactory", "computerPlayerFactory"],
 		
 		it("can determine the value of an empty board", 
 			function () {
-				
+
+			board = boardFactory({});
+			
+			var moveValues = computerPlayer.getMoveValues(board);
 		});
 	});
 

@@ -18,34 +18,93 @@ define([], function () {
 			var jRow = 0;
 			var jColumn = 0;
 
+			// The best move value seen so far
+			var value;
+
+			// The value of the board assuming you play a piece somewhere
+			// and the other player plays optimally
+			var response;
+
 			if (board.getState() !== board.state.unfinished) {
 				// we are at a terminal node (draw, xWon, or oWon)
 				// so evaluate
+				value = board.getState();
 
 				
 			} else if (board.getCurrentPlayer() === board.piece.x) {
 				// it is maximizer's turn (x)
+
+				value = board.state.oWon; // assume the worst
+
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
 					for (iColumn = 0; iColumn < board.getNumColumns();
 						iColumn += 1) {
 
-						board.playPiece({row: iRow, column: iColumn});
-						mMinimax(board, depth + 1);
-						board.undoLastMove();
+						if (board.isEmpty({row: iRow, column: iColumn})) {
+
+							board.playPiece({row: iRow, column: iColumn});
+							mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
+
+							// Get value of terminal state for playing 
+							// the piece above assuming the other player
+							// and you both play optimally
+							response = mMinimax(board, depth + 1);
+
+							// Store it in the hash table
+							mBoardToMoveValues[board].push({
+								row: iRow,
+								column: iColumn,
+								depth: depth,
+								value: response
+							});
+
+							board.undoLastMove();
+
+
+							if (response > value) {
+								value = response;
+							}
+						}
 					}
 				}
 			} else {
 				// it is minimizer's turn (o)
+
+				value = board.piece.x; // assume the worst
+
 				for (jRow = 0; jRow < board.getNumRows(); jRow += 1) {
 					for (jColumn = 0; jColumn < board.getNumColumns();
 						jColumn += 1) {
 
-						board.playPiece({row: jRow, column: jColumn});
-						mMinimax(board, depth + 1);
-						board.undoLastMove();
+						if (board.isEmpty({row: jRow, column: jColumn})) {
+							
+
+							value = board.state.xWon; // assume the worst
+
+							board.playPiece({row: jRow, column: jColumn});
+
+							mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
+
+							response = mMinimax(board, depth + 1);
+
+							mBoardToMoveValues[board].push({
+								row: iRow,
+								column: iColumn,
+								depth: depth,
+								value: response
+							});
+
+							board.undoLastMove();
+
+
+							if (response < value) {
+								value = response;
+							}
+						}
 					}
 				}
 			}
+			return value;
 		};
 
 
@@ -57,16 +116,19 @@ define([], function () {
 			var moveValues = [];
 			// If already stored, get the value and return it.
 			if (mBoardToMoveValues.hasOwnProperty(board)) {
-				moves = mBoardToMoveValues[board];
-
+				moveValues = mBoardToMoveValues[board];
 			} 
 			// Otherwise, minimax
 			else {
-				moves = mMiniMax(board, 0);
+				mMinimax(board, 0);
+				moveValues = mBoardToMoveValues[board];
 			}
 
-
 			return moveValues;
+		};
+
+		computerPlayer.getBoardToMoveValues = function () {
+			return mBoardToMoveValues;
 		};
 
 		return computerPlayer;
