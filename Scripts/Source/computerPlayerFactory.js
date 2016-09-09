@@ -161,7 +161,9 @@ define([], function () {
 			if (board.getCurrentPlayer() === board.piece.x) {
 				// look for move w/ max value
 				for (iMove = 1; iMove < moveValues.length; iMove += 1) {
-					if (moveValues[iMove].value > bestMove.value) {
+					if (moveValues[iMove].value > bestMove.value ||
+						(moveValues[iMove].value === bestMove.value &&
+						moveValues[iMove].depth < bestMove.depth)) {
 						
 						var bestMove = {
 							row: moveValues[iMove].row,
@@ -174,7 +176,9 @@ define([], function () {
 			} else {
 				// look for move w/ min value
 				for (iMove = 1; iMove < moveValues.length; iMove += 1) {
-					if (moveValues[iMove].value < bestMove.value) {
+					if (moveValues[iMove].value < bestMove.value ||
+						(moveValues[iMove].value === bestMove.value &&
+						moveValues[iMove].depth < bestMove.depth)) {
 						
 						var bestMove = {
 							row: moveValues[iMove].row,
