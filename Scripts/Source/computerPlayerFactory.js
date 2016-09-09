@@ -20,6 +20,7 @@ define([], function () {
 
 			// The best move value seen so far
 			var value;
+			var d = depth;
 
 			// The value of the board assuming you play a piece somewhere
 			// and the other player plays optimally
@@ -35,7 +36,8 @@ define([], function () {
 				// it is maximizer's turn (x)
 
 				value = board.state.oWon; // assume the worst
-				mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
+				//mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
+				mBoardToMoveValues[board] = [];
 
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
 					for (iColumn = 0; iColumn < board.getNumColumns();
@@ -72,6 +74,7 @@ define([], function () {
 
 							if (response.value > value) {
 								value = response.value;
+								d = response.depth;
 							}
 						}
 					}
@@ -80,7 +83,8 @@ define([], function () {
 				// it is minimizer's turn (o)
 
 				value = board.state.xWon; // assume the worst
-				mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
+				//mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
+				mBoardToMoveValues[board] = [];
 
 				for (jRow = 0; jRow < board.getNumRows(); jRow += 1) {
 					for (jColumn = 0; jColumn < board.getNumColumns();
@@ -114,12 +118,13 @@ define([], function () {
 
 							if (response.value < value) {
 								value = response.value;
+								d = response.depth;
 							}
 						}
 					}
 				}
 			}
-			return {value: value, depth: depth};
+			return {value: value, depth: d};
 		};
 
 
@@ -135,7 +140,7 @@ define([], function () {
 			} 
 			// Otherwise, minimax
 			else {
-				mMinimax(board, 0);
+				mMinimax(board, board.getNumMoves());
 				moveValues = mBoardToMoveValues[board];
 			}
 

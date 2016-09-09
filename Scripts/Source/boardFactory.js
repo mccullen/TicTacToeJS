@@ -16,7 +16,7 @@ define([], function () {
 		board.piece = Object.freeze({
 			x: 'X',
 			o: 'O',
-			none: ' '
+			none: '*'
 		});
 		
 		// Private variables

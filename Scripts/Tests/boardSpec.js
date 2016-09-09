@@ -30,7 +30,7 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 			expect(board.playPiece({
 				row: 0,
 				column: 2
-			}).toString()).toBe("  X      ");
+			}).toString()).toBe("**X******");
 
 			expect(board.playPiece.bind(board, {
 					row: 0,
@@ -38,7 +38,7 @@ define(["boardFactory", "underscore"], function (boardFactory, _) {
 				})).toThrow();
 
 			expect(board.playPiece({row: 0, column: 0}).toString())
-				.toBe("O X      ");
+				.toBe("O*X******");
 
 		});
 
