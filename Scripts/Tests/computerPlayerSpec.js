@@ -31,7 +31,7 @@ define(["boardFactory", "computerPlayerFactory"],
 			var bestMove = computerPlayer.getBestMove(board);
 			*/
 		});
-		xit("allows you to play a game", function () {
+		it("allows you to play a game", function () {
 			var board = boardFactory({});
 			var row = 0;
 			var column = 0;
@@ -44,7 +44,12 @@ define(["boardFactory", "computerPlayerFactory"],
 
 				// computer's turn
 				compMove = computerPlayer.getBestMove(board);
-				board.playPiece(compMove);
+
+				try {
+				board.playPiece({row: compMove.row, column: compMove.column});
+				} catch (e) {
+					debugger;
+				}
 				alert(board.getState() + '\n' + board.print());
 			}
 		})
