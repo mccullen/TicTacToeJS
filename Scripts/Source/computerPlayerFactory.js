@@ -45,10 +45,18 @@ define([], function () {
 
 							board.playPiece({row: iRow, column: iColumn});
 
-							// Get value of terminal state for playing 
-							// the piece above assuming the other player
-							// and you both play optimally
-							response = mMinimax(board, depth + 1);
+
+							if (board.getState() === board.state.xWon) {
+								response = {
+									value: board.state.xWon,
+									depth: depth
+								};
+							} else {
+								// Get value of terminal state for playing 
+								// the piece above assuming the other player
+								// and you both play optimally
+								response = mMinimax(board, depth + 1);
+							}
 
 
 							board.undoLastMove();
@@ -57,13 +65,13 @@ define([], function () {
 							mBoardToMoveValues[board].push({
 								row: iRow,
 								column: iColumn,
-								depth: depth,
-								value: response
+								depth: response.depth,
+								value: response.value
 							});
 
 
-							if (response > value) {
-								value = response;
+							if (response.value > value) {
+								value = response.value;
 							}
 						}
 					}
@@ -83,7 +91,15 @@ define([], function () {
 							board.playPiece({row: jRow, column: jColumn});
 
 
-							response = mMinimax(board, depth + 1);
+
+							if (board.getState() === board.state.oWon) {
+								response = {
+									value: board.state.oWon,
+									depth: depth
+								};
+							} else {
+								response = mMinimax(board, depth + 1);
+							}
 
 
 							board.undoLastMove();
@@ -91,19 +107,19 @@ define([], function () {
 							mBoardToMoveValues[board].push({
 								row: iRow,
 								column: iColumn,
-								depth: depth,
-								value: response
+								depth: response.depth,
+								value: response.value
 							});
 
 
-							if (response < value) {
-								value = response;
+							if (response.value < value) {
+								value = response.value;
 							}
 						}
 					}
 				}
 			}
-			return value;
+			return {value: value, depth: depth};
 		};
 
 

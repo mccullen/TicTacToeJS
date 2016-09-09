@@ -28,6 +28,7 @@ define(["boardFactory", "computerPlayerFactory"],
 				.playPiece({row: 0, column: 1})
 				.playPiece({row: 1, column: 1})
 				.playPiece({row: 0, column: 2});
+			var moveValues = computerPlayer.getMoveValues(board);
 			var bestMove = computerPlayer.getBestMove(board);
 
 
