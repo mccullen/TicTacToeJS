@@ -130,6 +130,49 @@ define([], function () {
 			return mBoardToMoveValues;
 		};
 
+		// Get best move {row: ?, column: ?} given a board
+		computerPlayer.getBestMove = function (board) {
+			var moveValues = computerPlayer.getMoveValues(board);
+			var iMove = 1;
+
+			var bestMove = {
+				row: moveValues[0].row,
+				column: moveValues[0].column,
+				value: moveValues[0].value,
+				depth: moveValues[0].depth
+			};
+
+			if (board.getCurrentPlayer() === board.piece.x) {
+				// look for move w/ max value
+				for (iMove = 1; iMove < moveValues.length; iMove += 1) {
+					if (moveValues[iMove].value > bestMove.value) {
+						
+						var bestMove = {
+							row: moveValues[iMove].row,
+							column: moveValues[iMove].column,
+							value: moveValues[iMove].value,
+							depth: moveValues[iMove].depth
+						};
+					}
+				}
+			} else {
+				// look for move w/ min value
+				for (iMove = 1; iMove < moveValues.length; iMove += 1) {
+					if (moveValues[iMove].value < bestMove.value) {
+						
+						var bestMove = {
+							row: moveValues[iMove].row,
+							column: moveValues[iMove].column,
+							value: moveValues[iMove].value,
+							depth: moveValues[iMove].depth
+						};
+					}
+				}
+			}
+
+			return bestMove;
+		};
+
 		return computerPlayer;
 	
 	}

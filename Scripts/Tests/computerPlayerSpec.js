@@ -12,6 +12,7 @@ define(["boardFactory", "computerPlayerFactory"],
 			
 			var moveValues = computerPlayer.getMoveValues(board);
 			*/
+			/*
 			board = boardFactory({});
 			board.playPiece({row: 0, column: 0})
 				.playPiece({row: 0, column: 1})
@@ -21,6 +22,13 @@ define(["boardFactory", "computerPlayerFactory"],
 				.playPiece({row: 1, column: 2});
 			
 			var moveValues = computerPlayer.getMoveValues(board);
+			*/
+			board = boardFactory({});
+			board.playPiece({row: 0, column: 0})
+				.playPiece({row: 0, column: 1})
+				.playPiece({row: 1, column: 1})
+				.playPiece({row: 0, column: 2});
+			var bestMove = computerPlayer.getBestMove(board);
 
 
 		});
