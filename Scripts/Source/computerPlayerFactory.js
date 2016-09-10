@@ -5,7 +5,7 @@ define([], function () {
 
 		// Private variables
 
-		var mBoardToMoveValues = {};
+		var mBoardToMoves = {};
 		var mValues = Object.freeze({
 			OWin: -1,
 			Draw: 0,
@@ -26,32 +26,32 @@ define([], function () {
 				column: column,
 
 				// These values get passed up to parent nodes in base case
-				depth: board.getNumMoves(),
-				value: undefined
+				depth: undefined,// [jrm] board.getNumMoves()
+				state: undefined
 			};
 
 			if (board.getState() !== board.state.unfinished) {
 				// we are at a terminal node (draw, xWon, or oWon)
 				// so evaluate
-				bestMove.value = board.getState();
+				bestMove.state = board.getState();
 				bestMove.depth = board.getNumMoves();
-				mBoardToMoveValues[board] = [];
+				mBoardToMoves[board] = [];
 
 				// [jrm] Don't need these in hash map but it is fun to 
 				// know how many valid boards there are.
-				mBoardToMoveValues[board].push({
+				mBoardToMoves[board].push({
 					row: row,
 					column: column,
-					value: board.getState(),
+					state: board.getState(),
 					depth: board.getNumMoves()
 				});
 
 			} else if (board.getCurrentPlayer() === board.piece.x) {
 				// it is maximizer's turn (x)
 
-				bestMove.value = board.state.oWon; // assume the worst
+				bestMove.state = board.state.oWon; // assume the worst
 				bestMove.depth = 0;
-				mBoardToMoveValues[board] = [];
+				mBoardToMoves[board] = [];
 
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
 					for (iColumn = 0; iColumn < board.getNumColumns();
@@ -68,15 +68,15 @@ define([], function () {
 							board.undoLastMove();
 
 							// Store it in the hash table
-							mBoardToMoveValues[board].push(response);
+							mBoardToMoves[board].push(response);
 
-							if (response.value > bestMove.value) {
-								bestMove.value = response.value;
+							if (response.state > bestMove.state) {
+								bestMove.state = response.state;
 								bestMove.depth = response.depth;
-							} else if (response.value === bestMove.value) {
-								if (response.value === board.state.oWon) {
+							} else if (response.state === bestMove.state) {
+								if (response.state === board.state.oWon) {
 									bestMove.depth = Math.max(bestMove.depth, response.depth);
-								} else if (response.value === board.state.xWon){
+								} else if (response.state === board.state.xWon){
 									bestMove.depth = Math.min(bestMove.depth, response.depth);
 								} else {
 									bestMove.depth = response.depth;
@@ -88,9 +88,9 @@ define([], function () {
 			} else {
 				// it is minimizer's turn (o)
 
-				bestMove.value = board.state.xWon; // assume the worst
+				bestMove.state = board.state.xWon; // assume the worst
 				bestMove.depth = 0;
-				mBoardToMoveValues[board] = [];
+				mBoardToMoves[board] = [];
 
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
 					for (iColumn = 0; iColumn < board.getNumColumns();
@@ -102,26 +102,20 @@ define([], function () {
 							response = mMinimax(board, iRow, iColumn);
 							board.undoLastMove();
 
-							mBoardToMoveValues[board].push(response);
+							mBoardToMoves[board].push(response);
 
-							if (response.value < bestMove.value) {
-								bestMove.value = response.value;
+							if (response.state < bestMove.state) {
+								bestMove.state = response.state;
 								bestMove.depth = response.depth;
-							} else if (response.value === bestMove.value) {
-								if (response.value === board.state.oWon) {
+							} else if (response.state === bestMove.state) {
+								if (response.state === board.state.oWon) {
 									bestMove.depth = Math.min(bestMove.depth, response.depth);
-								} else if (response.value === board.state.xWon){
+								} else if (response.state === board.state.xWon){
 									bestMove.depth = Math.max(bestMove.depth, response.depth);
 								} else {
 									bestMove.depth = response.depth;
 								}
 							}
-
-							/*
-							if (response.value < bestMove.value) {
-								bestMove.value = response.value;
-							}
-							*/
 						}
 					}
 				}
@@ -137,20 +131,20 @@ define([], function () {
 		computerPlayer.getMoveValues = function (board) {
 			var moveValues = [];
 			// If already stored, get the value and return it.
-			if (mBoardToMoveValues.hasOwnProperty(board)) {
-				moveValues = mBoardToMoveValues[board];
+			if (mBoardToMoves.hasOwnProperty(board)) {
+				moveValues = mBoardToMoves[board];
 			} 
 			// Otherwise, minimax
 			else {
 				mMinimax(board);
-				moveValues = mBoardToMoveValues[board];
+				moveValues = mBoardToMoves[board];
 			}
 
 			return moveValues;
 		};
 
-		computerPlayer.getBoardToMoveValues = function () {
-			return mBoardToMoveValues;
+		computerPlayer.getBoardToMoves = function () {
+			return mBoardToMoves;
 		};
 
 		// Get best move {row: ?, column: ?} given a board
@@ -161,20 +155,20 @@ define([], function () {
 			var bestMove = {
 				row: moveValues[0].row,
 				column: moveValues[0].column,
-				value: moveValues[0].value,
+				state: moveValues[0].state,
 				depth: moveValues[0].depth
 			};
 
 			if (board.getCurrentPlayer() === board.piece.x) {
 				// look for move w/ max value
 				for (iMove = 1; iMove < moveValues.length; iMove += 1) {
-					if (moveValues[iMove].value > bestMove.value ||
-							(moveValues[iMove].value === bestMove.value &&
+					if (moveValues[iMove].state > bestMove.state ||
+							(moveValues[iMove].state === bestMove.state &&
 							moveValues[iMove].depth < bestMove.depth)) {
 						var bestMove = {
 							row: moveValues[iMove].row,
 							column: moveValues[iMove].column,
-							value: moveValues[iMove].value,
+							state: moveValues[iMove].state,
 							depth: moveValues[iMove].depth
 						};
 					}
@@ -182,13 +176,13 @@ define([], function () {
 			} else {
 				// look for move w/ min value
 				for (iMove = 1; iMove < moveValues.length; iMove += 1) {
-					if (moveValues[iMove].value < bestMove.value ||
-							(moveValues[iMove].value === bestMove.value &&
+					if (moveValues[iMove].state < bestMove.state ||
+							(moveValues[iMove].state === bestMove.state &&
 							moveValues[iMove].depth < bestMove.depth)) {
 						var bestMove = {
 							row: moveValues[iMove].row,
 							column: moveValues[iMove].column,
-							value: moveValues[iMove].value,
+							state: moveValues[iMove].state,
 							depth: moveValues[iMove].depth
 						};
 					}
