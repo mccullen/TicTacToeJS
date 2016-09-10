@@ -26,7 +26,7 @@ define([], function () {
 				column: column,
 
 				// These values get passed up to parent nodes in base case
-				depth: undefined,
+				depth: board.getNumMoves(),
 				value: undefined
 			};
 
@@ -40,7 +40,7 @@ define([], function () {
 				// it is maximizer's turn (x)
 
 				bestMove.value = board.state.oWon; // assume the worst
-				//mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
+				bestMove.depth = 0;
 				mBoardToMoveValues[board] = [];
 
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
@@ -61,9 +61,17 @@ define([], function () {
 							// Store it in the hash table
 							mBoardToMoveValues[board].push(response);
 
-							bestMove.depth = response.depth;
 							if (response.value > bestMove.value) {
 								bestMove.value = response.value;
+								bestMove.depth = response.depth;
+							} else if (response.value === bestMove.value) {
+								if (response.value === board.state.oWon) {
+									bestMove.depth = Math.max(bestMove.depth, response.depth);
+								} else if (response.value === board.state.xWon){
+									bestMove.depth = Math.min(bestMove.depth, response.depth);
+								} else {
+									bestMove.depth = response.depth;
+								}
 							}
 						}
 					}
@@ -72,7 +80,7 @@ define([], function () {
 				// it is minimizer's turn (o)
 
 				bestMove.value = board.state.xWon; // assume the worst
-				//mBoardToMoveValues[board] = mBoardToMoveValues[board] || [];
+				bestMove.depth = 0;
 				mBoardToMoveValues[board] = [];
 
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
@@ -88,11 +96,24 @@ define([], function () {
 
 							mBoardToMoveValues[board].push(response);
 
+							if (response.value < bestMove.value) {
+								bestMove.value = response.value;
+								bestMove.depth = response.depth;
+							} else if (response.value === bestMove.value) {
+								if (response.value === board.state.oWon) {
+									bestMove.depth = Math.min(bestMove.depth, response.depth);
+								} else if (response.value === board.state.xWon){
+									bestMove.depth = Math.max(bestMove.depth, response.depth);
+								} else {
+									bestMove.depth = response.depth;
+								}
+							}
 
-							bestMove.depth = response.depth;
+							/*
 							if (response.value < bestMove.value) {
 								bestMove.value = response.value;
 							}
+							*/
 						}
 					}
 				}
