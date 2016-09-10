@@ -35,6 +35,16 @@ define([], function () {
 				// so evaluate
 				bestMove.value = board.getState();
 				bestMove.depth = board.getNumMoves();
+				mBoardToMoveValues[board] = [];
+
+				// [jrm] Don't need these in hash map but it is fun to 
+				// know how many valid boards there are.
+				mBoardToMoveValues[board].push({
+					row: row,
+					column: column,
+					value: board.getState(),
+					depth: board.getNumMoves()
+				});
 
 			} else if (board.getCurrentPlayer() === board.piece.x) {
 				// it is maximizer's turn (x)
@@ -45,8 +55,7 @@ define([], function () {
 
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
 					for (iColumn = 0; iColumn < board.getNumColumns();
-						iColumn += 1) {
-
+							iColumn += 1) {
 						if (board.isEmpty({row: iRow, column: iColumn})) {
 
 							board.playPiece({row: iRow, column: iColumn});
@@ -85,8 +94,7 @@ define([], function () {
 
 				for (iRow = 0; iRow < board.getNumRows(); iRow += 1) {
 					for (iColumn = 0; iColumn < board.getNumColumns();
-						iColumn += 1) {
-
+							iColumn += 1) {
 						if (board.isEmpty({row: iRow, column: iColumn})) {
 							
 							board.playPiece({row: iRow, column: iColumn});
@@ -161,9 +169,8 @@ define([], function () {
 				// look for move w/ max value
 				for (iMove = 1; iMove < moveValues.length; iMove += 1) {
 					if (moveValues[iMove].value > bestMove.value ||
-						(moveValues[iMove].value === bestMove.value &&
-						moveValues[iMove].depth < bestMove.depth)) {
-						
+							(moveValues[iMove].value === bestMove.value &&
+							moveValues[iMove].depth < bestMove.depth)) {
 						var bestMove = {
 							row: moveValues[iMove].row,
 							column: moveValues[iMove].column,
@@ -176,9 +183,8 @@ define([], function () {
 				// look for move w/ min value
 				for (iMove = 1; iMove < moveValues.length; iMove += 1) {
 					if (moveValues[iMove].value < bestMove.value ||
-						(moveValues[iMove].value === bestMove.value &&
-						moveValues[iMove].depth < bestMove.depth)) {
-						
+							(moveValues[iMove].value === bestMove.value &&
+							moveValues[iMove].depth < bestMove.depth)) {
 						var bestMove = {
 							row: moveValues[iMove].row,
 							column: moveValues[iMove].column,

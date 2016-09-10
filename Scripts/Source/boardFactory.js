@@ -46,8 +46,7 @@ define([], function () {
 			// - The current piece is different from the current player
 			// - You got to the end of the sequence
 			while (numInASequence < sequenceLength && 
-				mPieces[row][column] === mCurrentPlayer) {
-
+					mPieces[row][column] === mCurrentPlayer) {
 				numInASequence += 1;
 				column += colInc;
 				row += rowInc;
@@ -94,22 +93,17 @@ define([], function () {
 
 				// If horizontal or vertical win
 				if (mCheckWin(row, 0, 0, 1, mNumColumns) || 
-					mCheckWin(0, column, 1, 0, mNumRows)) {
-
+						mCheckWin(0, column, 1, 0, mNumRows)) {
 					state = mSetWinState();
-				
 				// If board is square, check for diagnol win
 				} else if (mNumColumns === mNumRows) {
-
 					// If the last move was on the top-left to
 					// bottom-right diagnol
 					if (row === column) {
-
 						if (mCheckWin(0, 0, 1, 1, mNumRows)) {
 							state = mSetWinState();	
 						}
 					}
-
 					// If the last move was on the top-right to 
 					// bottom-left diagnol
 					if (row + column === mNumRows - 1) {
@@ -117,18 +111,14 @@ define([], function () {
 							state = mSetWinState();
 						}
 					}
-				
 				}
 
 				if (state === board.state.unfinished &&
-					numMoves === mNumRows * mNumColumns) {
-
+						numMoves === mNumRows * mNumColumns) {
 					state = board.state.draw;
 					
 				}
 			}
-
-
 			return state;
 		};
 
@@ -160,16 +150,14 @@ define([], function () {
 		board.playPiece = function (place) {
 
 			if (typeof place.row !== "number" || 
-				typeof place.column !== "number") {
-
+					typeof place.column !== "number") {
 				throw {
 					message: "Row and column of object must be a number type"
 				};
 			}
 			if (place.row > mNumRows || 
-				place.column > mNumColumns ||
-				place.row < 0 || place.column < 0) {
-
+					place.column > mNumColumns ||
+					place.row < 0 || place.column < 0) {
 				throw {
 					message: "Row must be in range 0 to " + mNumRows +
 						" and column must be in range 0 to " + mNumColumns + "."
@@ -184,8 +172,6 @@ define([], function () {
 
 			// Play the piece
 			mPieces[place.row][place.column] = mCurrentPlayer;
-
-
 
 			mMoves.push({
 				row: place.row, 
@@ -242,7 +228,7 @@ define([], function () {
 			for (i = 0; i < mNumRows; i += 1) {
 				for (j = 0; j < mNumColumns; j += 1) {
 					if (mPieces[i][j] === board.piece.none) {
-						str += '_';
+						str += '*';
 					} else {
 						str += mPieces[i][j];
 					}

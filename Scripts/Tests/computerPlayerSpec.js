@@ -10,26 +10,6 @@ define(["boardFactory", "computerPlayerFactory"],
 			board = boardFactory({numRows: 3, numColumns: 3});
 			
 			var moveValues = computerPlayer.getMoveValues(board);
-			/*
-			board = boardFactory({});
-			board.playPiece({row: 0, column: 0})
-				.playPiece({row: 0, column: 1})
-				.playPiece({row: 0, column: 2})
-				.playPiece({row: 1, column: 0})
-				.playPiece({row: 1, column: 1})
-				.playPiece({row: 1, column: 2});
-			
-			var moveValues = computerPlayer.getMoveValues(board);
-			*/
-			/*
-			board = boardFactory({});
-			board.playPiece({row: 0, column: 0})
-				.playPiece({row: 0, column: 1})
-				.playPiece({row: 1, column: 1})
-				.playPiece({row: 0, column: 2});
-			var moveValues = computerPlayer.getMoveValues(board);
-			var bestMove = computerPlayer.getBestMove(board);
-			*/
 		});
 		xit("allows you to play a game", function () {
 			var board = boardFactory({});
