@@ -61,9 +61,9 @@ define([], function () {
 							// Store it in the hash table
 							mBoardToMoveValues[board].push(response);
 
+							bestMove.depth = response.depth;
 							if (response.value > bestMove.value) {
 								bestMove.value = response.value;
-								bestMove.depth = response.depth;
 							}
 						}
 					}
@@ -89,9 +89,9 @@ define([], function () {
 							mBoardToMoveValues[board].push(response);
 
 
+							bestMove.depth = response.depth;
 							if (response.value < bestMove.value) {
 								bestMove.value = response.value;
-								bestMove.depth = response.depth;
 							}
 						}
 					}

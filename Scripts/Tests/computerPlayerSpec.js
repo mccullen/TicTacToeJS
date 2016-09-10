@@ -7,7 +7,7 @@ define(["boardFactory", "computerPlayerFactory"],
 		it("can determine the value of an empty board", 
 			function () {
 
-			board = boardFactory({});
+			board = boardFactory({numRows: 2, numColumns: 3});
 			
 			var moveValues = computerPlayer.getMoveValues(board);
 			/*
@@ -31,7 +31,7 @@ define(["boardFactory", "computerPlayerFactory"],
 			var bestMove = computerPlayer.getBestMove(board);
 			*/
 		});
-		it("allows you to play a game", function () {
+		xit("allows you to play a game", function () {
 			var board = boardFactory({});
 			var row = 0;
 			var column = 0;
