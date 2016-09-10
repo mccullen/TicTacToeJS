@@ -39,12 +39,14 @@ define([], function () {
 
 				// [jrm] Don't need these in hash map but it is fun to 
 				// know how many valid boards there are.
+				/*
 				mBoardToMoves[board].push({
 					row: row,
 					column: column,
 					state: board.getState(),
 					depth: board.getNumMoves()
 				});
+				*/
 
 			} else if (board.getCurrentPlayer() === board.piece.x) {
 				// it is maximizer's turn (x)
