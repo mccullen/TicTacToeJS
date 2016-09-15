@@ -11,7 +11,7 @@ define(["boardFactory", "computerPlayerFactory"],
 			
 			var moveValues = computerPlayer.getMoveValues(board);
 		});
-		xit("allows you to play a game", function () {
+		it("allows you to play a game", function () {
 			var board = boardFactory({});
 			var row = 0;
 			var column = 0;
